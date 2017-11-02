@@ -13,27 +13,16 @@ using namespace Windows::ApplicationModel::Core;
 using namespace Windows::Foundation;
 using namespace Windows::Graphics::Holographic;
 using namespace Windows::UI::Core;
+using namespace Windows::ApplicationModel::Preview::Holographic;
+using namespace Windows::System;
 
 // The main function is only used to initialize our IFrameworkView class.
 // Under most circumstances, you should not need to modify this function.
 [Platform::MTAThread]
 int main(Platform::Array<Platform::String^>^)
 {
-	bool isHolographic = HolographicSpace::IsSupported && HolographicSpace::IsAvailable;
-
     AppView::RunXAMLView();
 
-#if 0
-	if (!isHolographic)
-	{
-		AppView::RunXAMLView();
-	}
-	else
-	{
-		AppViewSource^ appViewSource = ref new ::AppViewSource();
-		CoreApplication::Run(appViewSource);
-	}
-#endif
     return 0;
 }
 
@@ -82,6 +71,22 @@ void AppView::Initialize(CoreApplicationView^ applicationView)
 // Called when the CoreWindow object is created (or re-created).
 void AppView::SetWindow(CoreWindow^ window)
 {
+    bool status = HolographicApplicationPreview::IsCurrentViewPresentedOnHolographicDisplay();
+
+    if (status == true)
+    {
+        auto uri = ref new Uri("launcher-win32:"); // The protocol handled by the launched app
+        auto options = ref new LauncherOptions();
+        concurrency::task<bool> task(Launcher::LaunchUriAsync(uri, options));
+
+        task.then([this](bool result)
+        {
+            CoreApplication::Exit();
+        });
+
+        return;
+    }
+    
     // Register for keypress notifications.
     window->KeyDown +=
         ref new TypedEventHandler<CoreWindow^, KeyEventArgs^>(this, &AppView::OnKeyPressed);

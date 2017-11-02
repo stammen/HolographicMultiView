@@ -25,6 +25,7 @@ namespace HolographicXAMLView
 	private:
 		void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
 		void StartPage();
+        void ViewConsolidated(Windows::UI::ViewManagement::ApplicationView^ sender, Windows::UI::ViewManagement::ApplicationViewConsolidatedEventArgs^ e);
 
 		Platform::Agile<Windows::UI::Core::CoreWindow> m_xamlViewWindow;
 		int m_xamlViewId = -1;

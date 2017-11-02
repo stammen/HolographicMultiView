@@ -46,13 +46,17 @@ NoHMDPage::NoHMDPage()
 
 void NoHMDPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
+    auto status = HolographicApplicationPreview::IsCurrentViewPresentedOnHolographicDisplay();
+
+
 	if (!Windows::Graphics::Holographic::HolographicSpace::IsSupported)
 	{
 		warningText->Text = "Windows Mixed Reality is not supported on your PC";
 	}
-
-
-    StartPage();
+    else
+    {
+        StartPage();
+    }
 }
 
 
@@ -64,6 +68,8 @@ void NoHMDPage::StartPage()
         {
             m_xamlViewWindow = CoreWindow::GetForCurrentThread();
             m_xamlViewId = ApplicationView::GetApplicationViewIdForWindow(m_xamlViewWindow.Get());
+
+            ApplicationView::GetForCurrentView()->Consolidated += ref new TypedEventHandler<ApplicationView ^, ApplicationViewConsolidatedEventArgs ^>(this, &NoHMDPage::ViewConsolidated);;
 
             auto holographicViewSource = ref new HolographicMultiView::AppViewSource();
 
@@ -92,11 +98,17 @@ void NoHMDPage::StartPage()
 
             task.then([this](bool result)
             {
-                CoreApplication::Exit();
+               CoreApplication::Exit();
             });
         }
     }));
 }
+
+void NoHMDPage::ViewConsolidated(ApplicationView^ sender, ApplicationViewConsolidatedEventArgs^ e)
+{
+    CoreApplication::Exit();
+}
+
 
 
 void HolographicXAMLView::NoHMDPage::button3d_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)

@@ -26,6 +26,7 @@ using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Navigation;
 using namespace Windows::Graphics::Holographic;
+using namespace Windows::ApplicationModel::Preview::Holographic;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
@@ -35,6 +36,7 @@ App::App()
 {
     InitializeComponent();
     Suspending += ref new SuspendingEventHandler(this, &App::OnSuspending);
+
 }
 
 /// <summary>
@@ -45,6 +47,8 @@ App::App()
 void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e)
 {
     auto rootFrame = dynamic_cast<Frame^>(Window::Current->Content);
+
+    bool status = HolographicApplicationPreview::IsCurrentViewPresentedOnHolographicDisplay();
 
     // Do not repeat app initialization when the Window already has content,
     // just ensure that the window is active

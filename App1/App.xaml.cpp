@@ -40,10 +40,6 @@ App::App()
 /// <param name="e">Details about the launch request and process.</param>
 void App::OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e)
 {
-    auto uri = ref new Uri("launcher-win32:"); // The protocol handled by the launched app
-    auto options = ref new LauncherOptions();
-    concurrency::task<bool> task(Launcher::LaunchUriAsync(uri, options));
-
     auto rootFrame = dynamic_cast<Frame^>(Window::Current->Content);
 
     // Do not repeat app initialization when the Window already has content,

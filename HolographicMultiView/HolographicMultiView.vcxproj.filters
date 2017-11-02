@@ -67,6 +67,8 @@
       <Filter>Content</Filter>
     </ClCompile>
     <ClCompile Include="HolographicMultiViewMain.cpp" />
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="NoHMDPage.xaml.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -81,6 +83,8 @@
       <Filter>Content</Filter>
     </ClInclude>
     <ClInclude Include="HolographicMultiViewMain.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="NoHMDPage.xaml.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\VertexShaderShared.hlsl">
@@ -106,11 +110,11 @@
     <None Include="HolographicMultiView_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="App.xaml">
-      <Filter>XAMLView</Filter>
-    </Page>
     <Page Include="NoHMDPage.xaml">
       <Filter>XAMLView</Filter>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
   </ItemGroup>
 </Project>

@@ -8,6 +8,6 @@
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  Margin="20">
-        <TextBlock x:Name="warningText" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36">You don't have an HMD connected</TextBlock>
+        <TextBlock x:Name="warningText" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36">Running in the Desktop Shell</TextBlock>
     </Grid>
 </Page>

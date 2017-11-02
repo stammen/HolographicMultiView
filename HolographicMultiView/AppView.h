@@ -26,6 +26,7 @@ namespace HolographicMultiView
 
         // Application lifecycle event handlers.
         void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ args);
+        void OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs^ e);
         void OnViewActivated(Windows::ApplicationModel::Core::CoreApplicationView^ sender, Windows::ApplicationModel::Activation::IActivatedEventArgs^ args);
         void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ args);
         void OnResuming(Platform::Object^ sender, Platform::Object^ args);

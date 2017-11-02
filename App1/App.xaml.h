@@ -7,7 +7,7 @@
 
 #include "App.g.h"
 
-namespace HolographicXAMLView
+namespace App1
 {
 	/// <summary>
 	/// Provides application-specific behavior to supplement the default Application class.
@@ -16,11 +16,9 @@ namespace HolographicXAMLView
 	{
 	protected:
 		virtual void OnLaunched(Windows::ApplicationModel::Activation::LaunchActivatedEventArgs^ e) override;
-        virtual void OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs^ e) override;
 
 	internal:
 		App();
-		int holographicViewId = 0;
 
 	private:
 		void OnSuspending(Platform::Object^ sender, Windows::ApplicationModel::SuspendingEventArgs^ e);

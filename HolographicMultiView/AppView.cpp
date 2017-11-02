@@ -21,6 +21,9 @@ int main(Platform::Array<Platform::String^>^)
 {
 	bool isHolographic = HolographicSpace::IsSupported && HolographicSpace::IsAvailable;
 
+    AppView::RunXAMLView();
+
+#if 0
 	if (!isHolographic)
 	{
 		AppView::RunXAMLView();
@@ -30,6 +33,7 @@ int main(Platform::Array<Platform::String^>^)
 		AppViewSource^ appViewSource = ref new ::AppViewSource();
 		CoreApplication::Run(appViewSource);
 	}
+#endif
     return 0;
 }
 
@@ -164,6 +168,12 @@ void AppView::OnLaunched(LaunchActivatedEventArgs^ args)
         //
     }
 }
+
+void AppView::OnActivated(Windows::ApplicationModel::Activation::IActivatedEventArgs^ e)
+{
+    AppView::RunXAMLView();
+}
+
 
 // Called when the app view is activated. Activates the app's CoreWindow.
 void AppView::OnViewActivated(CoreApplicationView^ sender, IActivatedEventArgs^ args)

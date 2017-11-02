@@ -33,6 +33,9 @@ using namespace Windows::UI::Xaml::Interop;
 using namespace Windows::UI::Xaml::Media;
 using namespace Windows::UI::Xaml::Media::Imaging;
 using namespace Windows::UI::Xaml::Navigation;
+using namespace Windows::ApplicationModel::Preview::Holographic;
+using namespace Windows::System;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -40,8 +43,6 @@ NoHMDPage::NoHMDPage()
 {
 	InitializeComponent();
 }
-
-
 
 void NoHMDPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
 {
@@ -53,6 +54,8 @@ void NoHMDPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedE
 	{
 		Windows::Graphics::Holographic::HolographicSpace::IsAvailableChanged += ref new Windows::Foundation::EventHandler<Platform::Object ^>(this, &HolographicXAMLView::NoHMDPage::OnIsAvailableChanged);
 	}
+
+    OnIsAvailableChanged(nullptr, nullptr);
 }
 
 
@@ -60,26 +63,29 @@ void NoHMDPage::OnIsAvailableChanged(Platform::Object ^sender, Platform::Object 
 {
 	Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([this]()
 	{
-		m_xamlViewWindow = CoreWindow::GetForCurrentThread();
-		m_xamlViewId = ApplicationView::GetApplicationViewIdForWindow(m_xamlViewWindow.Get());
+        if (!HolographicApplicationPreview::IsCurrentViewPresentedOnHolographicDisplay())
+        {
+            m_xamlViewWindow = CoreWindow::GetForCurrentThread();
+            m_xamlViewId = ApplicationView::GetApplicationViewIdForWindow(m_xamlViewWindow.Get());
 
-		auto holographicViewSource = ref new HolographicMultiView::AppViewSource();
+            auto holographicViewSource = ref new HolographicMultiView::AppViewSource();
 
-		Windows::ApplicationModel::Core::CoreApplicationView^ view = Windows::ApplicationModel::Core::CoreApplication::CreateNewView(holographicViewSource);
+            Windows::ApplicationModel::Core::CoreApplicationView^ view = Windows::ApplicationModel::Core::CoreApplication::CreateNewView(holographicViewSource);
 
-		ApplicationView^ newAppView = nullptr;
+            ApplicationView^ newAppView = nullptr;
 
-		concurrency::task<void> newViewTask(
-			view->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([this]()
-		{
-			auto newAppView = ApplicationView::GetForCurrentView();
-			CoreWindow::GetForCurrentThread()->Activate();
-			m_holographicViewId = newAppView->Id;
-		})));
+            concurrency::task<void> newViewTask(
+                view->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([this]()
+            {
+                auto newAppView = ApplicationView::GetForCurrentView();
+                CoreWindow::GetForCurrentThread()->Activate();
+                m_holographicViewId = newAppView->Id;
+            })));
 
-		newViewTask.then([this]()
-		{
-			ApplicationViewSwitcher::SwitchAsync(m_holographicViewId, m_xamlViewId);
-		});
-	}));
+            newViewTask.then([this]()
+            {
+                ApplicationViewSwitcher::TryShowAsStandaloneAsync(m_holographicViewId);
+            });
+        }
+    }));
 }

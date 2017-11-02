@@ -50,16 +50,13 @@ void NoHMDPage::Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedE
 	{
 		warningText->Text = "Windows Mixed Reality is not supported on your PC";
 	}
-	else
-	{
-		Windows::Graphics::Holographic::HolographicSpace::IsAvailableChanged += ref new Windows::Foundation::EventHandler<Platform::Object ^>(this, &HolographicXAMLView::NoHMDPage::OnIsAvailableChanged);
-	}
 
-    OnIsAvailableChanged(nullptr, nullptr);
+
+    StartPage();
 }
 
 
-void NoHMDPage::OnIsAvailableChanged(Platform::Object ^sender, Platform::Object ^args)
+void NoHMDPage::StartPage()
 {
 	Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::High, ref new Windows::UI::Core::DispatchedHandler([this]()
 	{
@@ -87,5 +84,22 @@ void NoHMDPage::OnIsAvailableChanged(Platform::Object ^sender, Platform::Object 
                 ApplicationViewSwitcher::TryShowAsStandaloneAsync(m_holographicViewId);
             });
         }
+        else
+        {
+            auto uri = ref new Uri("launcher-win32:"); // The protocol handled by the launched app
+            auto options = ref new LauncherOptions();
+            concurrency::task<bool> task(Launcher::LaunchUriAsync(uri, options));
+
+            task.then([this](bool result)
+            {
+                CoreApplication::Exit();
+            });
+        }
     }));
+}
+
+
+void HolographicXAMLView::NoHMDPage::button3d_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e)
+{
+    ApplicationViewSwitcher::TryShowAsStandaloneAsync(m_holographicViewId);
 }

@@ -8,6 +8,9 @@
     mc:Ignorable="d" Loaded="Page_Loaded">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"  Margin="20">
-        <TextBlock x:Name="warningText" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="36">Running in the Desktop Shell</TextBlock>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" >
+            <TextBlock x:Name="warningText" FontSize="36">Running in the Desktop Shell</TextBlock>
+            <Button x:Name="button3d" Content="Launch 3D" Click="button3d_Click" />
+        </StackPanel>
     </Grid>
 </Page>

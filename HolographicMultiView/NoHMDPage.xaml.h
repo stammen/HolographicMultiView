@@ -24,10 +24,11 @@ namespace HolographicXAMLView
 
 	private:
 		void Page_Loaded(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
-		void OnIsAvailableChanged(Platform::Object ^sender, Platform::Object ^args);
+		void StartPage();
 
 		Platform::Agile<Windows::UI::Core::CoreWindow> m_xamlViewWindow;
 		int m_xamlViewId = -1;
 		int m_holographicViewId = -1;
-	};
+        void button3d_Click(Platform::Object^ sender, Windows::UI::Xaml::RoutedEventArgs^ e);
+    };
 }
